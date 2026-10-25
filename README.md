@@ -37,15 +37,26 @@ npm.cmd run test:report
 
 Set `BASE_URL` to target another permitted environment. Change the product query in `Config/test-data.json`; all five cases use this shared search keyword.
 
+## Customize the search keyword
+
+All five test cases use a shared search keyword configured in `Config/test-data.json`.
+
+1. Open `Config/test-data.json`.
+2. Update the value of `searchKeyword`, for example, from `wireless keyboard` to `computer mouse`.
+3. Save the file.
+4. Run the suite using `npm.cmd test`.
+
+The tests will use the updated keyword without requiring changes to individual test files. Choose a keyword that returns suitable, available products on Amazon.in. Because the tests interact with a live third-party website, results and availability may vary.
+
 ## Project structure
 
-- `Pages/` — Page Object Model classes for Amazon home, product, and cart behavior.
-- `tests/` — independent `@smoke` test cases and shared journey helper.
-- `Config/test-data.json` — shared base URL and product search keyword.
-- `reporters/` — one post-run Excel reporter, safe for parallel execution.
-- `reports/` — generated Excel execution report.
-- `playwright-report/` — generated HTML report.
-- `.github/workflows/` — GitHub Actions workflow and downloadable artifacts.
+- `Pages/` - Page Object Model classes for Amazon home, product, and cart behavior.
+- `tests/` - independent `@smoke` test cases and shared journey helper.
+- `Config/test-data.json` - shared base URL and product search keyword.
+- `reporters/` - one post-run Excel reporter, safe for parallel execution.
+- `reports/` - generated Excel execution report.
+- `playwright-report/` - generated HTML report.
+- `.github/workflows/` - GitHub Actions workflow and downloadable artifacts.
 
 ## Why these are P0
 
@@ -53,9 +64,11 @@ The suite verifies the shortest revenue-critical journey a customer can take wit
 
 ## Reliability and limitations
 
-The suite uses role-based or resilient CSS locators inside Page Objects, Playwright assertions and auto-waits, failure screenshots, and retry traces. CAPTCHA or verification pages are detected and fail with a clear message; the suite does not attempt to bypass them. Amazon catalog content, availability, and markup can change without notice, so the tests choose a visible result for the configured keyword rather than asserting a fixed product or price.
+The suite uses role-based or resilient CSS locators inside Page Objects, Playwright assertions and auto-waits, screenshots, and retry traces. CAPTCHA or verification pages are detected and fail with a clear message; the suite does not attempt to bypass them. Amazon catalog content, availability, and markup can change without notice, so the tests choose a visible result for the configured keyword rather than asserting a fixed product or price.
 
-Because Amazon is a live third-party site, CI retries twice to preserve diagnostics for intermittent rendering/network failures. With more time, I would add a controlled test environment, accessibility checks, and broader browser coverage.
+The GitHub Actions workflow runs TypeScript validation on pushes and pull requests. Live Amazon end-to-end tests are available through a manual workflow run because Amazon's hosted-runner responses previously included CAPTCHA/verification challenges. When enabled, the live test job uses CI retries to help diagnose intermittent failures. A green default CI run therefore confirms type-checking, not that the live Amazon tests passed.
+
+With more time, I would add a controlled test environment, accessibility checks, and broader browser coverage.
 
 ## Reports
 
