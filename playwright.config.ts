@@ -30,6 +30,6 @@ export default defineConfig({
     },
     // Retain diagnostics only when a retry is needed.
     trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
+    screenshot: 'on',
   },
 });

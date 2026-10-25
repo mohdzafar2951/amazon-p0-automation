@@ -1,10 +1,19 @@
-import { Page } from '@playwright/test';
+import { Page, TestInfo } from '@playwright/test';
 
 import { AmazonHomePage } from '../../Pages/AmazonHomePage';
 import { ProductPage } from '../../Pages/ProductPage';
 import testData from '../../Config/test-data.json';
 
-export async function openFirstAvailableProduct(page: Page, keyword = testData.searchKeyword): Promise<{ home: AmazonHomePage; product: ProductPage; asin: string }> {
+export type ExecutionDetails = { actual: string; comments: string };
+
+export async function attachExecutionDetails(testInfo: TestInfo, details: ExecutionDetails): Promise<void> {
+  await testInfo.attach('execution-details', {
+    body: Buffer.from(JSON.stringify(details)),
+    contentType: 'application/json',
+  });
+}
+
+export async function openFirstAvailableProduct(page: Page, keyword = testData.searchKeyword): Promise<{ home: AmazonHomePage; product: ProductPage; asin: string; details: string }> {
   const home = new AmazonHomePage(page);
   const product = new ProductPage(page);
   await home.open();
@@ -18,5 +27,8 @@ export async function openFirstAvailableProduct(page: Page, keyword = testData.s
   await home.ensureNoChallenge('the product details page');
   await product.verifyProductPage();
   if (/currently unavailable|out of stock/i.test(await product.getAvailability())) throw new Error('The selected product is unavailable.');
-  return { home, product, asin: await product.getAsin() };
+  const title = await product.getProductTitle();
+  const price = await product.getProductPrice();
+  const availability = await product.getAvailability();
+  return { home, product, asin: await product.getAsin(), details: `Search phrase: ${keyword}; Product title: ${title}; Price: ${price}; Availability: ${availability}` };
 }
