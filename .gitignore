@@ -1,11 +1,18 @@
 
 # Playwright
+
 node_modules/
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Environment variables and local secrets
+.env
+.env.*
+!.env.example
+
 # Screenshots: include only successful assignment evidence
 /screenshots/*
 !/screenshots/TC-01-product-details.png
