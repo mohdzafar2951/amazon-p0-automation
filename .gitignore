@@ -1,0 +1,13 @@
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+/screenshots/
+/reports/*.xlsx
+!/reports/sample-execution-report.xlsx
+/backup-before-cleanup-2026-10-26/
+/backup-before-standards-refactor-2026-10-26/
