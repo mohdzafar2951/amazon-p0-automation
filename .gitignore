@@ -6,8 +6,17 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
-/screenshots/
+# Screenshots: include only successful assignment evidence
+/screenshots/*
+!/screenshots/TC-01-product-details.png
+!/screenshots/TC-02-cart-page.png
+!/screenshots/TC-03-cart-contents.png
+!/screenshots/TC-04-update-cart-quantity.png
+!/screenshots/TC-05-proceed-to-checkout.png
+
+# Excel reports
 /reports/*.xlsx
 !/reports/sample-execution-report.xlsx
+!/reports/execution-report.xlsx
 /backup-before-cleanup-2026-10-26/
 /backup-before-standards-refactor-2026-10-26/
